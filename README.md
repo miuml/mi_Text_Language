@@ -12,7 +12,7 @@ Language principles:
 
 For a full definition of the language, please see the associated wiki here on Github.
 
-The parser (mitext.py) will consume a .™ file (text model) and uses a two-phase process to validate it.
+The parser (mitext.py) will consume a .tm file (text model) and uses a two-phase process to validate it.
 
 ###Phase 1 - Syntax
 The parser validates the text script syntax and overall structure.  It  does not worry about aggregate model integrity.  Any error encountered during this phase is fatal (results in termination) and will be reported without initiating any database connection.  
