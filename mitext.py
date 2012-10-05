@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 """
+mitext command
+
 Takes a text miUML model file from the command line, reads it and populates the
 local miUML metamodel database.  The entire file is first scanned for syntax errors.
 If any are found, the database will not be touched.  Assuming success, each model

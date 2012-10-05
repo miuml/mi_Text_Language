@@ -34,7 +34,7 @@ if MODULE_DIR not in sys.path:
     sys.path.append( MODULE_DIR )
 from mi_Error import *
 from mi_Parameter import Context_Parameter
-from mi_API_Parser import API_Parser, API_Constructor_Call
+from mi_API_Parser import API_Constructor_Call
 
 # Symbols
 CMD_PREFIX = "UI_"
@@ -66,12 +66,12 @@ class DB_Command:
 
         self.supplied_params = {} # The next two methods fill these in
         self.fill_in_context() # Only need to do this once per DB Command
-
-        # Event: package params ( ... ) -> self
         self.add_supplied_params( extracted_params )
 
     def fill_in_context( self ):
         """
+        State: Filling in Context
+
         For any Context Parameter that has a value, which is required by this
         DB Command, fill in the correspoinding Supplied Parameter by copying the
         Context Parameter value.
@@ -159,6 +159,7 @@ class DB_Command:
         )
 
 if __name__ == '__main__':
+    from mi_API_Parser import API_Parser
     API_Parser()
     Context_Parameter['domain'] = 'ATC'
     Context_Parameter['subsys'] = 'Main'

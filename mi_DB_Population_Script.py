@@ -52,7 +52,7 @@ class DB_Population_Script:
         """
         return None if not self.Rll_DB_Command else self.R11_DB_Command[-1]
 
-    def ev_add_command( self, call_name, extracted_params ):
+    def add_command( self, call_name, extracted_params ):
         """
         Event: Add a new command to the end of this pop script
 
@@ -83,23 +83,5 @@ class DB_Population_Script:
 
 
 if __name__ == '__main__':
-    import os
-    from sys import argv, stdin
 
-    # For now we will process a single file only, make sure one is specified
-    if len( argv ) != 1:
-        print( "Specify an miUML text file to process." )
-        exit(1)
-
-    # Verify that the file exists before connecting to the db
-    if not os.path.isfile(argv[1]):
-        print( "Could not open the file." )
-        # We'll test again for an open error when we start processing it
-        exit(1)
-
-    # Connect to the metamodel db
-    db = miuml_db()
-
-    # Process the miuml text file
-    the_SFile = miUML_Text_File( "Resources/api_def.mi" )
-    pprint( the_SFile.sections )
+    print( DB_Population_Script )

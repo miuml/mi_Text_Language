@@ -50,6 +50,7 @@ def class Extraction:
         """
         # miUML Text Script file path
         self.fname = text_file
+        self.ts_file = None  # Open file descriptor
 
         # Model navigation shorcuts
         self.R9_DB_Population_Script = db_pop_script_obj
@@ -64,11 +65,26 @@ def class Extraction:
         self.identifiers = {}
 
         # Process each line of the text script
-        self.read_text_script()
+        self.open_text_script()
+        self.process_lines()
 
     
-    def read_text_script( self ):
+    def open_text_script( self ):
         """
+        State: Opening Text Script
+
+        """
+        try:
+            self.ts_file = open( self.fname )
+        except:
+            # Transition to Invalid File terminal state
+            raise mi_File_Error( "Cannot open", self.fname )
+
+
+    def process_lines( self ):
+        """
+        State: Processing Line
+        
         Opens an miUML Text Script and processes each line.  A non-comment,
         non-whitespace line will either be a section header or an expression
         pattern.
@@ -77,12 +93,7 @@ def class Extraction:
         Statement which parses itself according to the pattern.
 
         """
-        try:
-            my_file = open( self.fname )
-        except:
-            raise mi_File_Error( "Cannot open", self.fname )
-
-        for n, line in enumerate( my_file, 1 ):
+        for n, line in enumerate( self.ts_file, 1 ):
             line = self.strip_comment( line )
             # left indent whitespace is preserved
             if line:
@@ -98,9 +109,10 @@ def class Extraction:
                             line.strip(), self.current_section, self
                         )
 
-
     def update_section( self, section_name ):
         """
+        State: Updating Current Section
+
         Verifies that the new section fits in the current context.
         If so, it becomes the new current context.
 
@@ -110,8 +122,10 @@ def class Extraction:
             raise mi_Parse_Error( "Unrecognized section",
                     self.fname, self.line_no, section_name  )
             if section_name not in section_order[self.current_section]:
+                # State: Bad Section
                 raise mi_Parse_Error( "Section in wrong context",
                         self.fname, self.line_no, section_name )
+
         self.current_section = section_name
 
 
