@@ -1,0 +1,71 @@
+type
+
+    # Corresponds to the Metamodel Type class on the Text Model Class Diagram
+    # App param type is populated using ui type
+    # Types used by the metamodel API are on the left column
+    # Types used in Python to cast into DB Commands are in the right column
+
+    # As the Python types are unconstrained, but that's okay because the API
+    # will raise an error if any value is out of range.
+
+    compound_name  string
+    nominal        integer
+    name           string
+    short_name     string
+    posint         integer
+    text           string
+    description    string
+    domain_type    string
+    persp          string
+    mult           string
+    boolean        bool
+
+constructor
+
+    # This is the subset of all metamodel API calls which create
+    # metamodel elements.  The word 'new' should preface all of these
+    # call names.
+
+    # Each block consists of at least two lines with this format:
+    #
+    #   <metamodel_class> [ / api_call_name ]
+    #   <param_name>:<app_type>, ...
+    #
+    # The first line is the name of the metamodel class and the corresponding
+    # api_call_name which is only necessary if the name does not follow the
+    # new_<metamodel class> naming format.
+    #
+    # The second line is the api parameter name (without the p_ prefix)
+    # paired with the data type used by the API to constrain that parameter
+    #
+    # [<param_name>:<app type>] means api supplies a default if not specified
+    # <param_name>:<app type>... means that a set of values may be provided
+
+    domain
+    name:name, alias:short_name, [type:domain_type]
+
+    subsystem
+    domain:name, name:name, alias:short_name, floor:posint, ceiling:posint
+
+    class
+    name:name, subsys:name, domain:name, alias:short_name
+    [cnum:nominal], [id_name:name], [id_type:name]
+
+    attr / new_ind_attr
+    name:name, class:name, domain:name, type:name
+
+    bridge
+    client:name, service:name
+
+    binary_assoc
+    active_class:name, passive_class:name, subsys:name, domain:name
+    [rnum:nominal], [formalizing_persp:persp],
+    [active_mult:mult], [active_cond:boolean], [active_phrase:name]
+    [passive_mult:mult], [passive_cond:boolean], [passive_phrase:name]
+    [assoc_class:name], [assoc_alias:short_name] 
+
+    gen
+    subsys:name, domain:name
+    superclass:name, [super_alias:short_name]
+    subclasses:name..., [sub_aliases:short_name...]
+    [rnum:nominal]
