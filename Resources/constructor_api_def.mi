@@ -38,17 +38,21 @@ constructor
     # The second line is the api parameter name (without the p_ prefix)
     # paired with the data type used by the API to constrain that parameter
     #
-    # [<param_name>:<app type>] means api supplies a default if not specified
-    # <param_name>:<app type>... means that a set of values may be provided
+    # [<param_name>:<app-type>] means api supplies a default if not specified
+    # <param_name>:<app_type>... means that a set of values may be provided
+    # <param_name>-><focus_param>:<app_type> means that param_name will set a value
+    # that serves as a context for any param with focus_param name.  For example,
+    # name->domain:name means that any value supplied for name will be used to set
+    # the value of any param named 'domain'
 
     domain
-    name:name, alias:short_name, [type:domain_type]
+    name->domain:name, alias:short_name, [type:domain_type]
 
     subsystem
-    domain:name, name:name, alias:short_name, floor:posint, ceiling:posint
+    domain:name, name->subsys:name, alias:short_name, floor:posint, ceiling:posint
 
     class
-    name:name, subsys:name, domain:name, alias:short_name
+    name->class:name, subsys:name, domain:name, alias:short_name
     [cnum:nominal], [id_name:name], [id_type:name]
 
     attr / new_ind_attr

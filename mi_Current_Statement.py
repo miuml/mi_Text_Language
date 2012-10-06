@@ -107,6 +107,10 @@ class Statement:
         in the extracted parameter set.
 
         """
+        for c in Context_Parameter:
+            if c in params:
+                Context_Parameter[c] = params[c]
+
         for p, v in params.items():
             if p in Context_Parameter:
                 Context_Parameter[p] = v

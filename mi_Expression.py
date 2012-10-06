@@ -51,23 +51,25 @@ SUB = r'|'
 ASSOC = r'^'
 
 # _RS designates a regex string (uncompiled)
+name_RS = r'(?P<name>' + NAME + ')'
+alias_RS = r'(?P<alias>' + NAME + ')' # Domain, Subsystem, Class alias
+
 domain_type_RS = r'(?P<type>(modeled|realized))?'
 mult_RS = r'(?P<mult>>>?0?)'
-name_RS = r'(?P<name>' + NAME + ')'
 from_class_RS = r'(?P<from_class>' + NAME + ')'
 to_class_RS = r'(?P<to_class>' + TO_NAME + ')'
 phrase_RS = r'(?P<phrase>' + NAME + ')'
 attr_RS = r'(?P<derived>\\)?\s*(?P<name>' + NAME + ')' # Handles derived attributes
 to_name_RS = r'(?P<to_name>' + NAME + ')' # Referenced attribute
 type_RS = r'(?P<type>' + NAME + ')' # Data type
-alias_RS = r'(?P<alias>' + NAME + ')' # Domain, Subsystem, Class alias
 range_RS = r'(?P<floor>\d+)-(?P<ceiling>\d+)' # Range of values, ex: 1-100
 id_RS = r'(?P<id>I[I,\d\s]+)' # identifier tags: I[, I2, ... ]
 rnum_RS = r'R(?P<rnum>\d+)' # R<num>
 
 # Full pattern names for readability
-name_alias_RS = LIST.join( [name_RS, alias_RS] )
 name_alias_domain_type_RS = LIST.join( [name_RS, alias_RS, domain_type_RS] )
+
+name_alias_RS = LIST.join( [name_RS, alias_RS] )
 name_alias_range_RS = LIST.join( [name_RS, alias_RS, range_RS] )
 attr_id_RS = LIST.join( [attr_RS, id_RS ] )
 attr_type_RS = TYPE.join( [attr_RS, type_RS] )
