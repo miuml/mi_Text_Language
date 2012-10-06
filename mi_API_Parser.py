@@ -41,7 +41,6 @@ API_PATH = os.path.abspath( "Resources/constructor_api_def.mi" )
 CALL_PREFIX = "UI_"
 TYPE_SECTION = "type"
 CONSTRUCTION = "constructor"
-TYPE_ASSIGNER = ":"
 
 # Regex
 # <metaclass>[ / <callname>]
@@ -125,12 +124,12 @@ class API_Parser:
         # metaclass and parameter list
         #
         # Every parameter line has at least one parameter, and a parameter
-        # must always use the TYPE_ASSIGNER symbol to declare its type
+        # must always use the : symbol to declare its type
         # So we can sort sort the two record types based on whether or not
         # this symbol is found in the line.
         #
         for n, line in enumerate( self.api_data.sections[CONSTRUCTION] ):
-            if TYPE_ASSIGNER in line: # It's a list of parameters
+            if ":" in line: # It's a list of parameters
                 self.parse_params( line, n )
             else: # It's the name of a metaclass
                 self.parse_metaclass( line, n )
@@ -139,15 +138,22 @@ class API_Parser:
         """
         Parse a line of comma separated parameters with the format:
 
-        name:{app type:<app type>, optional:<bool>}, ...
+        <param_name>[-><focus_param>]:<app_type>[...]
 
+        where [] indicates an optional item and ... is an literal symbol
+
+        all of which may or may not be bracketed by [ ] to indicate that
+        the param is optional
+
+        See the source file comments for more details on the grammar
 
         """
         line = line.rstrip(",") # remove any superfluous trailing comma
         for precord in line.split(","):
             optional = False # API provides a default value for parameter
             multiple = False # Multiple values may be specified for parameter
-            param_name, param_type = precord.split( TYPE_ASSIGNER )
+            focus_param = None
+            param_name, param_type = precord.split( ":" )
 
             # Is this an optional parameter?
             if '[' in param_name:
@@ -155,6 +161,10 @@ class API_Parser:
 
             param_name = param_name.lstrip(" [")
             param_type = param_type.rstrip(" ]")
+
+            # Check for scope setting
+            if "->" in param_name:
+                param_name, focus_param = param_name.split("->")
 
             if param_type.endswith('...'):
                 multiple = True
@@ -173,8 +183,10 @@ class API_Parser:
                 raise mi_Parse_Error( "Parameter with unknown type", API_PATH, n, line )
 
             # All good, add the parameter to the metaclass
-            API_Constructor_Call[self.current_api_call]['parameters'][param_name] = \
-                        {'type':param_type, 'optional':optional, 'multiple':multiple}
+            prec = {'type':param_type, 'optional':optional, 'multiple':multiple}
+            if focus_param:
+                prec['scope'] = focus_param # Relevant for only a handful of calls
+            API_Constructor_Call[self.current_api_call]['parameters'][param_name] = prec
 
 
     def parse_metaclass( self, line, n ):
