@@ -413,7 +413,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2012-10-06 17:55:02 +0000</string>
+	<string>2012-10-07 02:20:43 +0000</string>
 	<key>Modifier</key>
 	<string>Leon Starr</string>
 	<key>NotesVisible</key>
@@ -15368,13 +15368,146 @@ MODEL INTEGRATION, LLC}</string>
 			<key>GraphicsList</key>
 			<array>
 				<dict>
+					<key>AllowConnections</key>
+					<string>NO</string>
+					<key>Class</key>
+					<string>LineGraphic</string>
+					<key>Head</key>
+					<dict>
+						<key>ID</key>
+						<integer>12258</integer>
+					</dict>
+					<key>ID</key>
+					<integer>13321</integer>
+					<key>Layer</key>
+					<integer>0</integer>
+					<key>Points</key>
+					<array>
+						<string>{1040.3765218717426, 928.88887032020887}</string>
+						<string>{1039.6536599741014, 995.43032561712505}</string>
+					</array>
+					<key>Style</key>
+					<dict>
+						<key>stroke</key>
+						<dict>
+							<key>HeadArrow</key>
+							<string>FilledArrow</string>
+							<key>Legacy</key>
+							<true/>
+							<key>TailArrow</key>
+							<string>0</string>
+						</dict>
+					</dict>
+					<key>Tail</key>
+					<dict>
+						<key>ID</key>
+						<integer>13285</integer>
+					</dict>
+				</dict>
+				<dict>
+					<key>Bounds</key>
+					<string>{{995.6043669112488, 417.58240554776438}, {28, 15}}</string>
+					<key>Class</key>
+					<string>ShapedGraphic</string>
+					<key>FitText</key>
+					<string>YES</string>
+					<key>Flow</key>
+					<string>Resize</string>
+					<key>FontInfo</key>
+					<dict>
+						<key>Font</key>
+						<string>Futura-Medium</string>
+						<key>Size</key>
+						<real>11</real>
+					</dict>
+					<key>ID</key>
+					<integer>13320</integer>
+					<key>Layer</key>
+					<integer>0</integer>
+					<key>Shape</key>
+					<string>Rectangle</string>
+					<key>Style</key>
+					<dict>
+						<key>fill</key>
+						<dict>
+							<key>Draws</key>
+							<string>NO</string>
+						</dict>
+						<key>shadow</key>
+						<dict>
+							<key>Draws</key>
+							<string>NO</string>
+						</dict>
+						<key>stroke</key>
+						<dict>
+							<key>Draws</key>
+							<string>NO</string>
+						</dict>
+					</dict>
+					<key>Text</key>
+					<dict>
+						<key>Align</key>
+						<integer>0</integer>
+						<key>Pad</key>
+						<integer>0</integer>
+						<key>Text</key>
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf470
+{\fonttbl\f0\fnil\fcharset0 Futura-Medium;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs22 \cf0 parse}</string>
+						<key>VerticalPad</key>
+						<integer>0</integer>
+					</dict>
+					<key>Wrap</key>
+					<string>NO</string>
+				</dict>
+				<dict>
+					<key>AllowConnections</key>
+					<string>NO</string>
+					<key>Class</key>
+					<string>LineGraphic</string>
+					<key>Head</key>
+					<dict>
+						<key>ID</key>
+						<integer>12245</integer>
+					</dict>
+					<key>ID</key>
+					<integer>13319</integer>
+					<key>Layer</key>
+					<integer>0</integer>
+					<key>Points</key>
+					<array>
+						<string>{1041.1268888968034, 383.91403357030407}</string>
+						<string>{1042.2609817504883, 443.57082465231304}</string>
+					</array>
+					<key>Style</key>
+					<dict>
+						<key>stroke</key>
+						<dict>
+							<key>HeadArrow</key>
+							<string>FilledArrow</string>
+							<key>Legacy</key>
+							<true/>
+							<key>TailArrow</key>
+							<string>0</string>
+						</dict>
+					</dict>
+					<key>Tail</key>
+					<dict>
+						<key>ID</key>
+						<integer>13316</integer>
+					</dict>
+				</dict>
+				<dict>
 					<key>Class</key>
 					<string>Group</string>
 					<key>Graphics</key>
 					<array>
 						<dict>
 							<key>Bounds</key>
-							<string>{{933.99999999999977, 295.47116732745201}, {214.12196350097662, 93.085067749023438}}</string>
+							<string>{{934.06590714631511, 325.60742346288214}, {214.12196350097662, 58.306610107421875}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FontInfo</key>
@@ -15435,8 +15568,9 @@ MODEL INTEGRATION, LLC}</string>
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
 \f0\fs18 \cf0 \expnd0\expndtw0\kerning0
-self.section = in.section\
+self.section = in.current_section\
 self.text = in.text\
+parse -&gt; self\
 }</string>
 							</dict>
 							<key>TextPlacement</key>
@@ -15446,7 +15580,7 @@ self.text = in.text\
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{933.99999999999977, 273.94164930462563}, {214.12196350097662, 21.52958370966418}}</string>
+							<string>{{934.06590714631511, 304.07790544005576}, {214.12196350097662, 21.52958370966418}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FontInfo</key>
@@ -15535,7 +15669,7 @@ self.text = in.text\
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{1049.8914866295638, 859.48740367554728}, {66, 15}}</string>
+					<string>{{958.51850159047262, 973.16182167557679}, {66, 15}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -15599,7 +15733,7 @@ self.text = in.text\
 					<array>
 						<dict>
 							<key>Bounds</key>
-							<string>{{934.60168379135303, 782.79773859760894}, {214.12196350097662, 51.955053048537181}}</string>
+							<string>{{872.38489894693794, 810.64561470497438}, {335.98324584960938, 118.24325561523438}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FontInfo</key>
@@ -15660,7 +15794,12 @@ self.text = in.text\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
 \f0\fs18 \cf0 \expnd0\expndtw0\kerning0
-execute parsing function\
+my db pop script = self..R13..Extraction..R9..DB Population Script\
+last command = db pop script.Last command()\
+if last command:\
+    add supplied params( call name, extracted params ) -&gt; last command\
+else:\
+    add command( call name, extracted params ) -&gt; my db pop script\
 done parsing -&gt; self}</string>
 							</dict>
 							<key>TextPlacement</key>
@@ -15670,7 +15809,7 @@ done parsing -&gt; self}</string>
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{934.60168379135303, 758.3445580035683}, {214.12196350097662, 24.453255201011235}}</string>
+							<string>{{872.38489894693794, 786.19243411093373}, {335.98324584960938, 24.453255201011235}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FontInfo</key>
@@ -15722,7 +15861,7 @@ done parsing -&gt; self}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\b\fs24 \cf0 Parsing}</string>
+\f0\b\fs24 \cf0 Updating DB Command}</string>
 								<key>VerticalPad</key>
 								<integer>0</integer>
 							</dict>
@@ -15781,8 +15920,8 @@ done parsing -&gt; self}</string>
 					<integer>0</integer>
 					<key>Points</key>
 					<array>
-						<string>{1032.2610838517628, 991.95664005718322}</string>
-						<string>{1032.5308028833601, 1008.940983150804}</string>
+						<string>{1039.653659974178, 1062.703056853401}</string>
+						<string>{1039.9233790057758, 1079.6873999470213}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -15809,7 +15948,7 @@ done parsing -&gt; self}</string>
 					<array>
 						<dict>
 							<key>Bounds</key>
-							<string>{{1028.1685749666426, 1012.0787552340864}, {8.7244558334350586, 8.7244558334350586}}</string>
+							<string>{{1035.5611510890583, 1082.8251720303037}, {8.7244558334350586, 8.7244558334350586}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>HFlip</key>
@@ -15841,7 +15980,7 @@ done parsing -&gt; self}</string>
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{1025.0308028833601, 1008.940983150804}, {14.999999999999998, 14.999999999999998}}</string>
+							<string>{{1032.4233790057758, 1079.6873999470213}, {14.999999999999998, 14.999999999999998}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>ID</key>
@@ -15868,7 +16007,7 @@ done parsing -&gt; self}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{1334.2689415993125, 542.47941331236643}, {118, 15}}</string>
+					<string>{{1171.4285376682024, 478.02196424546713}, {118, 15}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -16136,7 +16275,7 @@ parse error =&gt; UI}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{978.39999999999998, 735.96958367644618}, {54, 15}}</string>
+					<string>{{813.80749566033319, 756.06691242067973}, {210, 15}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -16186,7 +16325,7 @@ parse error =&gt; UI}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs22 \cf0 context set}</string>
+\f0\fs22 \cf0 context set( call name, extracted params )}</string>
 						<key>VerticalPad</key>
 						<integer>0</integer>
 					</dict>
@@ -16209,8 +16348,8 @@ parse error =&gt; UI}</string>
 					<integer>0</integer>
 					<key>Points</key>
 					<array>
-						<string>{1038.9704952481475, 711.199999136521}</string>
-						<string>{1041.6626697960626, 758.3445580035683}</string>
+						<string>{1041.2914009086039, 712.07910212201296}</string>
+						<string>{1040.3765285471302, 786.19243411093385}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -16237,7 +16376,7 @@ parse error =&gt; UI}</string>
 					<array>
 						<dict>
 							<key>Bounds</key>
-							<string>{{925.19999999999982, 946.21341877422424}, {214.12196350097662, 45.743221282958984}}</string>
+							<string>{{932.59257612241504, 1016.959835570442}, {214.12196350097662, 45.743221282958984}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FontInfo</key>
@@ -16299,7 +16438,7 @@ parse error =&gt; UI}</string>
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{925.19999999999982, 924.68390075139814}, {214.12196350097662, 21.52958370966418}}</string>
+							<string>{{932.59257612241504, 995.43031754761557}, {214.12196350097662, 21.52958370966418}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FontInfo</key>
@@ -16386,7 +16525,7 @@ parse error =&gt; UI}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{855.60271354176302, 593.99999999999966}, {178, 15}}</string>
+					<string>{{790.34499601444156, 594.30767523748705}, {232, 15}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -16436,7 +16575,7 @@ parse error =&gt; UI}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs22 \cf0 expr matched ( extracted params ) }</string>
+\f0\fs22 \cf0 update context( call name, extracted params )}</string>
 						<key>VerticalPad</key>
 						<integer>0</integer>
 					</dict>
@@ -16462,7 +16601,7 @@ parse error =&gt; UI}</string>
 					<key>Points</key>
 					<array>
 						<string>{1042.261083851763, 558.18541042416291}</string>
-						<string>{1038.9705973493456, 620.00000916533156}</string>
+						<string>{1041.291503009802, 620.87911215082352}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -16489,7 +16628,7 @@ parse error =&gt; UI}</string>
 					<array>
 						<dict>
 							<key>Bounds</key>
-							<string>{{931.90951349765919, 644.45318059404053}, {214.12196350097662, 66.746818542480469}}</string>
+							<string>{{934.23041915811564, 645.33228357953249}, {214.12196350097662, 66.746818542480469}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FontInfo</key>
@@ -16550,9 +16689,9 @@ parse error =&gt; UI}</string>
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
 \f0\fs18 \cf0 \expnd0\expndtw0\kerning0
-If any context values have been extracted:\
-    set them\
-done parsing -&gt; self}</string>
+for each extracted param that is a focus param:\
+    set corresponding Context Parameter\
+context set( call name, extracted params ) -&gt; self}</string>
 							</dict>
 							<key>TextPlacement</key>
 							<integer>0</integer>
@@ -16561,7 +16700,7 @@ done parsing -&gt; self}</string>
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{931.90951349765919, 619.99999999999989}, {214.12196350097662, 24.453255201011235}}</string>
+							<string>{{934.23041915811564, 620.87910298549184}, {214.12196350097662, 24.453255201011235}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FontInfo</key>
@@ -16613,7 +16752,7 @@ done parsing -&gt; self}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
 
-\f0\b\fs24 \cf0 Setting Context}</string>
+\f0\b\fs24 \cf0 Updating Context}</string>
 								<key>VerticalPad</key>
 								<integer>0</integer>
 							</dict>
@@ -16658,7 +16797,7 @@ done parsing -&gt; self}</string>
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{1052.8, 249.30909023915484}, {98, 15}}</string>
+					<string>{{1052.8659071463155, 279.44534637458497}, {136, 15}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -16708,7 +16847,7 @@ done parsing -&gt; self}</string>
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs22 \cf0 new ( section, text )}</string>
+\f0\fs22 \cf0 new ( text, current section )}</string>
 						<key>VerticalPad</key>
 						<integer>0</integer>
 					</dict>
@@ -16731,8 +16870,8 @@ done parsing -&gt; self}</string>
 					<integer>0</integer>
 					<key>Points</key>
 					<array>
-						<string>{1040.8, 233.59999999999999}</string>
-						<string>{1041.0609817504881, 273.94164930462563}</string>
+						<string>{1040.8659071463155, 263.73625613543015}</string>
+						<string>{1041.1268888968034, 304.07790544005582}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -16897,9 +17036,9 @@ done parsing -&gt; self}</string>
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
 \f0\fs18 \cf0 \expnd0\expndtw0\kerning0
-search all expressions under in.section\
+search all expressions in self.section\
 if match found:\
-    expr matched ( extracted params ) -&gt; self\
+    update context( call name, extracted params )\
 else:\
     no matching expression -&gt; self\
 }</string>
@@ -25360,7 +25499,7 @@ http://www.gnu.org/licenses/</string>
 	<key>WindowInfo</key>
 	<dict>
 		<key>CurrentSheet</key>
-		<integer>0</integer>
+		<integer>2</integer>
 		<key>ExpandedCanvases</key>
 		<array>
 			<dict>
@@ -25372,8 +25511,6 @@ http://www.gnu.org/licenses/</string>
 				<string>Extraction SM</string>
 			</dict>
 		</array>
-		<key>FitInWindow</key>
-		<true/>
 		<key>Frame</key>
 		<string>{{1952, 80}, {1888, 1119}}</string>
 		<key>ListView</key>
@@ -25389,9 +25526,9 @@ http://www.gnu.org/licenses/</string>
 		<key>SidebarWidth</key>
 		<integer>181</integer>
 		<key>VisibleRegion</key>
-		<string>{{-221, 0}, {3032.96255958644, 1727.9999452962932}}</string>
+		<string>{{479.99999152289513, 451.11110314420233}, {1253.3333111986703, 714.07406146307244}}</string>
 		<key>Zoom</key>
-		<real>0.55787038803100586</real>
+		<real>1.3500000238418579</real>
 		<key>ZoomValues</key>
 		<array>
 			<array>
@@ -25406,7 +25543,7 @@ http://www.gnu.org/licenses/</string>
 			</array>
 			<array>
 				<string>Current Statement SM</string>
-				<real>1.25</real>
+				<real>1.3500000238418579</real>
 				<real>0.0</real>
 			</array>
 			<array>

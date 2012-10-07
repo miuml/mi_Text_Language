@@ -22,6 +22,8 @@ Extracts data from an miUML Text Script and creates a DB Population Script
 
 # System
 import re
+import os
+import sys
 
 # Diagnostic
 import pdb # debug
@@ -32,24 +34,25 @@ if MODULE_DIR not in sys.path:
     sys.path.append( MODULE_DIR )
 from mi_Error import *
 from mi_Section import *
-from mi_Statement import Statement
+from mi_Current_Statement import Current_Statement
 
 # Global
 
 
 # Constants
+COMMENT_CHAR = '#'
 
-def class Extraction:
+class Extraction:
     """
     A DB Population Script is extracted from an miUML Text Script during
     an Extraction.  So this is an association class on a 1:1 association.
 
     """
-    def __init__( self, text_file_path, db_pop_script_obj )
+    def __init__( self, text_file_path, db_pop_script_obj ):
         """
         """
         # miUML Text Script file path
-        self.fname = text_file
+        self.fname = text_file_path
         self.ts_file = None  # Open file descriptor
 
         # Model navigation shorcuts
@@ -61,8 +64,8 @@ def class Extraction:
         self.context = {}
 
         # Metamodel specific
-        self.ref_attrs = {}
-        self.identifiers = {}
+        #self.ref_attrs = {}
+        #self.identifiers = {}
 
         # Process each line of the text script
         self.open_text_script()
@@ -98,14 +101,14 @@ def class Extraction:
             # left indent whitespace is preserved
             if line:
                 self.line_no = n
-                section_name = section_RE.match( line ).groupdict()['name']
-                if section_name:
+                section_match = section_RE.match( line )
+                if section_match:
                     # If the section name is valid, set it as the current section
-                    self.update_section( section_name )
+                    self.update_section( section_match.groupdict()['name'] )
                 else:
                     # Create a Statement which will parse the content
                     # any whitespace indent is removed
-                    self.current_statement = Statement(
+                    self.current_statement = Current_Statement(
                             line.strip(), self.current_section, self
                         )
 
@@ -118,7 +121,7 @@ def class Extraction:
 
         """
         # This expression constructs a metamodel element
-        if section_name not in metamodel_sections:
+        if section_name not in Section:
             raise mi_Parse_Error( "Unrecognized section",
                     self.fname, self.line_no, section_name  )
             if section_name not in section_order[self.current_section]:
@@ -139,11 +142,11 @@ def class Extraction:
             return None
 
         # Comment type 1: Entire line is a comment, return nothing
-        if line.startswith( _COMMENT_CHAR ):
+        if line.startswith( COMMENT_CHAR ):
             return None
 
         # Comment type 2: Remove trailing comment
-        return line.split( _COMMENT_CHAR )[0].rstrip()
+        return line.split( COMMENT_CHAR )[0].rstrip()
 
         # Content, but no comment, preserve indent and strip trailing whitespace/newline
         return line.rstrip()
@@ -152,15 +155,15 @@ def class Extraction:
 
 
 # Not sure where these should go
-    def add_ref_attr( self, data_items ):
-        """
-        { R26: { 'from': 'Source attribute', 'to':'Name', 'constrained':True } }
-        """
-        rnum = data_items.pop('rnum')
-        self.ref_attrs[rnum] = data_items
-
-    def add_non_primary_id( self ):
-        """
-        """
-        self.np_ids['class'] = 
-
+#    def add_ref_attr( self, data_items ):
+#        """
+#        { R26: { 'from': 'Source attribute', 'to':'Name', 'constrained':True } }
+#        """
+#        rnum = data_items.pop('rnum')
+#        self.ref_attrs[rnum] = data_items
+#
+#    def add_non_primary_id( self ):
+#        """
+#        """
+#        self.np_ids['class'] = 
+#

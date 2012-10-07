@@ -45,21 +45,21 @@ import pdb # debug
 
 # Global
 
-# Complete set of legal section names, indented to show relative context
-# Each seciton has a name corresponding to a miUML metaclass and either
+# Complete set of legal section names 
+# Each section has a name corresponding to a miUML metaclass and either
 # None indicating singular or a plural suffix indicating multiple objects
 # are created in that section.
 Section = {
-    ('model', None ), # Not plural (one object of that type created)
-        ('domain', None ),
-            ( 'type', 's' ), # plural (multiple objects of that type created)
-            ( 'subsystem', None ),
-                ( 'class', 'es' ),
-                ( 'relationship', 's' ),
-                ( 'lifecycle', 's' ),
-            ( 'loop', 's' ),
-            ( 'lineage', 's' ),
-        ( 'bridge', 's' )
+        'model':None, # Not plural (one object of that type created)
+        'domain':None,
+        'type':'s', # plural multiple objects of that type created)
+        'subsystem':None,
+        'class':'es',
+        'relationship':'s',
+        'lifecycle':'s',
+        'loop':'s',
+        'lineage':'s',
+        'bridge':'s'
     }
 
 # Section grammar has been hand-parsed so that

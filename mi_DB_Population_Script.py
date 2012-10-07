@@ -23,6 +23,8 @@ schema.
 
 # System
 import re
+import os
+import sys
 
 # Diagnostic
 import pdb # debug
@@ -50,14 +52,14 @@ class DB_Population_Script:
         Returns the DB Command object at the end of the pop script
 
         """
-        return None if not self.Rll_DB_Command else self.R11_DB_Command[-1]
+        return None if not self.R11_DB_Command else self.R11_DB_Command[-1]
 
     def add_command( self, call_name, extracted_params ):
         """
         Event: Add a new command to the end of this pop script
 
         """
-        self.Rll_DB_Command.append( DB_Command( self, call_name, extracted_params ) )
+        self.R11_DB_Command.append( DB_Command( call_name, extracted_params ) )
 
     def execute( self ):
         """

@@ -24,6 +24,8 @@ during the processing of an miUML Text Script.
 
 # System
 import re
+import os
+import sys
 
 # Diagnostic
 import pdb # debug
@@ -33,11 +35,12 @@ MODULE_DIR = os.path.abspath( "../Modules" )
 if MODULE_DIR not in sys.path:
     sys.path.append( MODULE_DIR )
 from mi_Error import *
+from mi_API_Parser import API_Constructor_Call
 from mi_Parameter import Context_Parameter
 from mi_DB_Command import DB_Command
 from mi_Expression import Expression
 
-class Statement:
+class Current_Statement:
     """
     The Current Statement is the line in an miUML Text Script that matches a legal
     Expression currently being processed.  Only one of these ever exists at a time
@@ -48,7 +51,7 @@ class Statement:
     contained.  In complex cases, further parsing may be required.
 
     """
-    def __init__( self, text, section, extraction_obj ):
+    def __init__( self, text, current_section, extraction_obj ):
         """
         State: Creating
 
@@ -57,7 +60,7 @@ class Statement:
 
         """
         self.R13_Extraction = extraction_obj
-        self.section = section
+        self.section = current_section
         self.text = text
         self.parse()
 
@@ -80,7 +83,7 @@ class Statement:
                     extracted_params = r.groupdict()
                     expr_name = expr['name']
                     call_name = expr['call']
-                    self.update_context( extracted_params )
+                    self.update_context( call_name, extracted_params )
                     # tfuncs[ Expression[self.section]['name'] ]( r.groupdict(), self.text )
                     self.update_DB_Command( call_name, extracted_params )
                     return
@@ -92,38 +95,38 @@ class Statement:
                 self.extraction.name, self.extraction.current_line, self.text
             )
 
-    def update_DB_Command( self, extracted_params ):
+    def update_DB_Command( self, call_name, extracted_params ):
         """
         """
-        last_command = self.R13_Extraction.R9_DB_Population_Script.last_command()
+        my_db_script = self.R13_Extraction.R9_DB_Population_Script
+        last_command = my_db_script.last_command()
         if last_command:
             last_command.add_supplied_params( call_name, extracted_params )
         else:
-            the_db_script.add_command( call_name, extracted_params )
+            self.R13_Extraction
+            my_db_script.add_command( call_name, extracted_params )
+            pdb.set_trace()
 
-    def update_context( self, params ):
+    def update_context( self, call_name, params ):
         """
         Update any Context Parameters if any Focus Parameter names are found
         in the extracted parameter set.
 
         """
-        for c in Context_Parameter:
-            if c in params:
-                Context_Parameter[c] = params[c]
-
-        for p, v in params.items():
-            if p in Context_Parameter:
-                Context_Parameter[p] = v
+        pspecs = API_Constructor_Call[call_name]['parameters']
+        focus_params = [ fp for fp in pspecs if 'scope' in pspecs[fp] ]
+        for fp in focus_params:
+            Context_Parameter[ pspecs[fp]['scope'] ] = params[fp]
 
 
-tfuncs = {
-    'new_domain' : pass_params,
-    'new_subsystem' : pass_params,
-    'new_class' : pass_params,
-    'new_attr' : pass_params,
-    'new_gen' : pass_params,
-    'new_bin_rel' : pass_params
-}
+#tfuncs = {
+#    'new_domain' : pass_params,
+#    'new_subsystem' : pass_params,
+#    'new_class' : pass_params,
+#    'new_attr' : pass_params,
+#    'new_gen' : pass_params,
+#    'new_bin_rel' : pass_params
+#}
 
 
 if __name__ == '__main__':

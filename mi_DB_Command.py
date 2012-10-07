@@ -131,6 +131,7 @@ class DB_Command:
             self.pvals.append( v ) # Append the value to be assigned
         self.cmd += ", ".join( pstrings ) + " )" # Add params and closing parenthesis
 
+        pdb.set_trace()
         # State: Completed / ( final state with procedure finished )
 
 
