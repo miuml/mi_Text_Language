@@ -6,8 +6,6 @@
 domain
     miUML Metamodel / MIUML / modeled
 
-types
-
 subsystem
     Class / CLASS / 1-50
 

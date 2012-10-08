@@ -35,7 +35,7 @@ MODULE_DIR = os.path.abspath( "../Modules" )
 if MODULE_DIR not in sys.path:
     sys.path.append( MODULE_DIR )
 from mi_Error import *
-from mi_API_Parser import API_Constructor_Call
+from mi_API_Parser import API_Constructor_Call, API_Type
 from mi_Parameter import Context_Parameter
 from mi_DB_Command import DB_Command
 from mi_Expression import Expression
@@ -80,9 +80,12 @@ class Current_Statement:
             for pattern in expr['patterns']:
                 r = pattern.match( self.text )
                 if r:
-                    extracted_params = r.groupdict()
                     expr_name = expr['name']
                     call_name = expr['call']
+
+                    extracted_params = self.convert_params( call_name, r.groupdict() )
+                    # Check types
+                    pdb.set_trace()
                     self.update_context( call_name, extracted_params )
                     # tfuncs[ Expression[self.section]['name'] ]( r.groupdict(), self.text )
                     self.update_DB_Command( call_name, extracted_params )
@@ -95,17 +98,29 @@ class Current_Statement:
                 self.extraction.name, self.extraction.current_line, self.text
             )
 
+    def convert_params( self, call_name, pdict ):
+        """
+        Convert each parameter to a python base type compatible with the target
+        application data type.
+
+        """
+        typed_params = {}
+        for p, v in pdict.items():
+            app_type = API_Constructor_Call[call_name]['parameters'][p]['type']
+            typed_params[p] = API_Type[app_type](v)
+        return typed_params
+
+
     def update_DB_Command( self, call_name, extracted_params ):
         """
         """
         my_db_script = self.R13_Extraction.R9_DB_Population_Script
         last_command = my_db_script.last_command()
         if last_command:
-            last_command.add_supplied_params( call_name, extracted_params )
+            last_command.add_supplied_params( extracted_params )
         else:
             self.R13_Extraction
             my_db_script.add_command( call_name, extracted_params )
-            pdb.set_trace()
 
     def update_context( self, call_name, params ):
         """

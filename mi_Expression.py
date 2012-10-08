@@ -54,6 +54,7 @@ ASSOC = r'^'
 name_RS = r'(?P<name>' + NAME + ')'
 alias_RS = r'(?P<alias>' + NAME + ')' # Domain, Subsystem, Class alias
 domain_type_RS = r'(?P<type>(modeled|realized))?'
+range_RS = r'(?P<floor>\d+)-(?P<ceiling>\d+)' # Range of values, ex: 1-100
 
 #mult_RS = r'(?P<mult>>>?0?)'
 #from_class_RS = r'(?P<from_class>' + NAME + ')'
@@ -62,15 +63,14 @@ domain_type_RS = r'(?P<type>(modeled|realized))?'
 #attr_RS = r'(?P<derived>\\)?\s*(?P<name>' + NAME + ')' # Handles derived attributes
 #to_name_RS = r'(?P<to_name>' + NAME + ')' # Referenced attribute
 #type_RS = r'(?P<type>' + NAME + ')' # Data type
-#range_RS = r'(?P<floor>\d+)-(?P<ceiling>\d+)' # Range of values, ex: 1-100
 #id_RS = r'(?P<id>I[I,\d\s]+)' # identifier tags: I[, I2, ... ]
 #rnum_RS = r'R(?P<rnum>\d+)' # R<num>
 
 # Full pattern names for readability
 name_alias_domain_type_RS = LIST.join( [name_RS, alias_RS, domain_type_RS] )
+name_alias_range_RS = LIST.join( [name_RS, alias_RS, range_RS] )
 
 #name_alias_RS = LIST.join( [name_RS, alias_RS] )
-#name_alias_range_RS = LIST.join( [name_RS, alias_RS, range_RS] )
 #attr_id_RS = LIST.join( [attr_RS, id_RS ] )
 #attr_type_RS = TYPE.join( [attr_RS, type_RS] )
 #attr_type_id_RS = TYPE.join( [attr_RS, type_RS, id_RS] )
@@ -95,7 +95,7 @@ Expression = { # Expression modeled class implemented as dict
             'patterns':( re.compile( name_alias_domain_type_RS ), ),
             'call':'new_domain'
         },
-    )
+    ),
 #    'bridges':(
 #        {
 #            'name':'new_bridge',
@@ -103,13 +103,13 @@ Expression = { # Expression modeled class implemented as dict
 #            'call':'new_bridge'
 #        },
 #    ),
-#    'subsystem':(
-#        {
-#            'name':'new_subystem',
-#            'patterns':( re.compile( name_alias_range_RS ), ),
-#            'call':'new_subsystem'
-#        },
-#    ),
+    'subsystem':(
+        {
+            'name':'new_subystem',
+            'patterns':( re.compile( name_alias_range_RS ), ),
+            'call':'new_subsystem'
+        },
+    )
 #    'classes':(
 #        {
 #            'name':'new_class',

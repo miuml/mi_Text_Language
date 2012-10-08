@@ -49,10 +49,18 @@ class DB_Population_Script:
 
     def last_command( self ):
         """
-        Returns the DB Command object at the end of the pop script
+        Returns the last unfinished DB Command.  A DB Command is not finished until
+        a cmd string has been generated.
 
         """
-        return None if not self.R11_DB_Command else self.R11_DB_Command[-1]
+        # Empty script (no commands yet)
+        if not self.R11_DB_Command:
+            return None
+
+        # If last command is unfinished, return it
+        last_command = self.R11_DB_Command[-1]
+        return ( last_command if not last_command.cmd else None )
+
 
     def add_command( self, call_name, extracted_params ):
         """
