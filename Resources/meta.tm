@@ -26,7 +26,7 @@ classes
         Name / I
         Cnum : Nominal / I3
         Alias : Short name / I4
-        Domain -> Subsystem Element / I1234 / R14
+        Domain -> Subsystem Element / I234 / R14
         Element -> Subsystem Element.Number / I2 / R14
 
     Derived Attribute / DATTR

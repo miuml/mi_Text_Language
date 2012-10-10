@@ -55,32 +55,37 @@ name_RS = r'(?P<name>' + NAME + ')'
 alias_RS = r'(?P<alias>' + NAME + ')' # Domain, Subsystem, Class alias
 domain_type_RS = r'(?P<type>(modeled|realized))?'
 range_RS = r'(?P<floor>\d+)-(?P<ceiling>\d+)' # Range of values, ex: 1-100
+opt_cnum_RS = '(' + LIST + r'(?P<cnum>\d+)' + ')?' # optional <num>
 
 #mult_RS = r'(?P<mult>>>?0?)'
 #from_class_RS = r'(?P<from_class>' + NAME + ')'
 #to_class_RS = r'(?P<to_class>' + TO_NAME + ')'
 #phrase_RS = r'(?P<phrase>' + NAME + ')'
-#attr_RS = r'(?P<derived>\\)?\s*(?P<name>' + NAME + ')' # Handles derived attributes
 #to_name_RS = r'(?P<to_name>' + NAME + ')' # Referenced attribute
-#type_RS = r'(?P<type>' + NAME + ')' # Data type
-#id_RS = r'(?P<id>I[I,\d\s]+)' # identifier tags: I[, I2, ... ]
-#rnum_RS = r'R(?P<rnum>\d+)' # R<num>
 
 # Full pattern names for readability
 name_alias_domain_type_RS = LIST.join( [name_RS, alias_RS, domain_type_RS] )
 name_alias_range_RS = LIST.join( [name_RS, alias_RS, range_RS] )
+name_alias_opt_cnum_RS = LIST.join( [name_RS, alias_RS] ) + opt_cnum_RS
 
-#name_alias_RS = LIST.join( [name_RS, alias_RS] )
-#attr_id_RS = LIST.join( [attr_RS, id_RS ] )
-#attr_type_RS = TYPE.join( [attr_RS, type_RS] )
-#attr_type_id_RS = TYPE.join( [attr_RS, type_RS, id_RS] )
-#from_to_RS = REF.join( [attr_RS, to_attr_RS] )
-#ref_RS = LIST.join( [from_to_RS, rnum_RS] )
-#ref_id_RS = LIST.join( [from_to_RS, ref_RS, id_RS] )
+
 #persp_RS = from_class_RS + LIST + phrase_RS + mult_RS + to_class_RS
 #superclass_RS = name_RS + SPACE + SUPER
 #subclasses_RS = NAME + SUB + r'.*'
 #assoc_class_RS = ASSOC + SPACE + name_RS
+#name_alias_RS = LIST.join( [name_RS, alias_RS] )
+
+# Attribute expression
+opt_id_RS = '(' + LIST + r'(?P<id>I[2-9]*)' + ')?'# identifier tags: I[, I2, ... ]
+opt_derived_RS = r'((?P<derived>\\)\s*)?'
+opt_type_RS = '(' + TYPE + r'(?P<type>' + NAME + '))?'
+opt_deriv_attr_opt_type_opt_id_RS =  opt_derived_RS + name_RS + opt_type_RS + opt_id_RS
+
+# Referential attribute expression
+from_attr_RS = r'(?P<from_attr>' + NAME + ')'
+to_attrs_RS = r'\s*->\s*(?P<to_attrs>\w[\w.:,\s]*\w)'
+rnum_opt_c_RS = LIST + r'R(?P<rnum>\d+)(?P<constrained>c)?' # R<num>
+from_attr_to_attrs_opt_id_rnum_opt_c_RS = from_attr_RS + to_attrs_RS + opt_id_RS + rnum_opt_c_RS
 
 # { section:<expressions>, ... }
 # expressions -> ( ( name:expr_name, <patterns>, call:api_call_name ), ... )
@@ -109,28 +114,31 @@ Expression = { # Expression modeled class implemented as dict
             'patterns':( re.compile( name_alias_range_RS ), ),
             'call':'new_subsystem'
         },
-    )
-#    'classes':(
-#        {
-#            'name':'new_class',
-#            'patterns':( re.compile( name_alias_cnum_RS ), ),
-#            'call':'new_class'
-#        },
-#    ),
-#    'attributes':(
-#        {
-#            'name':'new_attr',
-#            'patterns':(
-#                re.compile( attr_type_id_RS ),
-#                re.compile( attr_id_RS ),
-#                re.compile( attr_type_RS ),
-#                re.compile( ref_id_RS ),
-#                re.compile( ref_RS ),
-#                re.compile( attr_RS )
-#            ),
-#            'call':'new_attr'
-#        },
-#    ),
+    ),
+    'classes':(
+        {
+            'name':'new_class',
+            'patterns':( re.compile( name_alias_opt_cnum_RS ), ),
+            'call':'new_class'
+            'extract':'new_class_ids'
+        },
+    ),
+    'attributes':(
+        {
+            'name':'new_ind_attr',
+            'patterns':(
+                re.compile( attr_opt_type_opt_id_RS ), ),
+            'call':'new_ind_attr',
+            'extract': 'parse_ids'
+        },
+        {
+            'name':'new_ref_attr',
+            'patterns':(
+                re.compile( ref_opt_id_rnum_RS ), ),
+            'call': None, # No API call, data saved for later command
+            'extract': 'save_refs'
+        }
+    ),
 #    'relationships':(
 #        {
 #            'name':'active_persp',

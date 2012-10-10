@@ -82,13 +82,14 @@ class Current_Statement:
                 if r:
                     expr_name = expr['name']
                     call_name = expr['call']
-
+                    extract_func = expr.get('extract') # Exists only for some exprs
                     extracted_params = self.convert_params( call_name, r.groupdict() )
-                    # Check types
-                    pdb.set_trace()
                     self.update_context( call_name, extracted_params )
+                    if extract_func:
+                        extracted_params = eval( extract_func )
                     # tfuncs[ Expression[self.section]['name'] ]( r.groupdict(), self.text )
-                    self.update_DB_Command( call_name, extracted_params )
+                    if call_name:
+                        self.update_DB_Command( call_name, extracted_params )
                     return
 
         # State: Invalid Statement
@@ -133,15 +134,14 @@ class Current_Statement:
         for fp in focus_params:
             Context_Parameter[ pspecs[fp]['scope'] ] = params[fp]
 
-
-#tfuncs = {
-#    'new_domain' : pass_params,
-#    'new_subsystem' : pass_params,
-#    'new_class' : pass_params,
-#    'new_attr' : pass_params,
-#    'new_gen' : pass_params,
-#    'new_bin_rel' : pass_params
-#}
+tfuncs = {
+    'new_domain' : None,
+    'new_subsystem' : None,
+    'new_class' : None,
+    'new_attr' : extract_attr,
+    'new_gen' : None,
+    'new_bin_rel' : None
+}
 
 
 if __name__ == '__main__':

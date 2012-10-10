@@ -108,9 +108,8 @@ class Extraction:
                 else:
                     # Create a Statement which will parse the content
                     # any whitespace indent is removed
-                    self.current_statement = Current_Statement(
-                            line.strip(), self.current_section, self
-                        )
+                    pdb.set_trace()
+                    Current_Statement( line.strip(), self.current_section, self )
 
     def update_section( self, section_name ):
         """
