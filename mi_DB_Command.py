@@ -73,8 +73,8 @@ class DB_Command:
         State: Filling in Context
 
         For any Context Parameter that has a value, which is required by this
-        DB Command, fill in the correspoinding Supplied Parameter by copying the
-        Context Parameter value.
+        DB Command, fill in the corresponding empty Supplied Parameter by copying
+        the Context Parameter value.
 
         For example, if the Context Parameter 'domain' is set to 'Air Traffic Control'
         and this DB Command requries a value for 'domain', add a Supplied Parameter

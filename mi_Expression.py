@@ -38,6 +38,7 @@ CMD_PREFIX = "UI_"
 LIST_DELIM = '/' # List delimiter
 REF_SYMBOL = '->' # Reference symbol
 TYPE_SYMBOL = ':' # Data type designator
+SUBSYS_REF = '::' # Subsystem reference
 
 # Regex pattern building blocks
 SPACE = r'\s*' # Stretch of whitespace
@@ -120,23 +121,20 @@ Expression = { # Expression modeled class implemented as dict
             'name':'new_class',
             'patterns':( re.compile( name_alias_opt_cnum_RS ), ),
             'call':'new_class'
-            'extract':'new_class_ids'
         },
     ),
     'attributes':(
         {
             'name':'new_ind_attr',
             'patterns':(
-                re.compile( attr_opt_type_opt_id_RS ), ),
-            'call':'new_ind_attr',
-            'extract': 'parse_ids'
+                re.compile( opt_deriv_attr_opt_type_opt_id_RS ), ),
+            'call':'new_ind_attr'
         },
         {
             'name':'new_ref_attr',
             'patterns':(
-                re.compile( ref_opt_id_rnum_RS ), ),
+                re.compile( from_attr_to_attrs_opt_id_rnum_opt_c_RS ), ),
             'call': None, # No API call, data saved for later command
-            'extract': 'save_refs'
         }
     ),
 #    'relationships':(
