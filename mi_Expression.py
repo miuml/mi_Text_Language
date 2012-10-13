@@ -111,7 +111,7 @@ Expression = { # Expression modeled class implemented as dict
 #    ),
     'subsystem':(
         {
-            'name':'new_subystem',
+            'name':'new_subsystem',
             'patterns':( re.compile( name_alias_range_RS ), ),
             'call':'new_subsystem'
         },
@@ -122,8 +122,6 @@ Expression = { # Expression modeled class implemented as dict
             'patterns':( re.compile( name_alias_opt_cnum_RS ), ),
             'call':'new_class'
         },
-    ),
-    'attributes':(
         {
             'name':'new_ind_attr',
             'patterns':(

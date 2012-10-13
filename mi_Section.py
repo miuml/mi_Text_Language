@@ -45,21 +45,27 @@ import pdb # debug
 
 # Global
 
-# Complete set of legal section names 
-# Each section has a name corresponding to a miUML metaclass and either
-# None indicating singular or a plural suffix indicating multiple objects
-# are created in that section.
+# Complete set of legal section names paired with the corresponding metaclass
+# name.
+#
+# A singular named section will define the structure of a single instance of
+# its metaclass.  The domain section, for example, defines the structure of a
+# single domain.
+#
+# A plural named section will define multiple instances of the same metamodel
+# class.  The 'bridges' section defines multiple bridges.
+#
 Section = {
-        'model':None, # Not plural (one object of that type created)
-        'domain':None,
-        'type':'s', # plural multiple objects of that type created)
-        'subsystem':None,
-        'class':'es',
-        'relationship':'s',
-        'lifecycle':'s',
-        'loop':'s',
-        'lineage':'s',
-        'bridge':'s'
+        'model':'model',
+        'domain':'domain',
+        'types':'type',
+        'subsystem':'subsystem',
+        'classes':'class',
+        'relationships':'relationship',
+        'lifecycles':'lifecycle',
+        'loops':'loop',
+        'lineages':'lineage',
+        'bridges':'bridge'
     }
 
 # Section grammar has been hand-parsed so that

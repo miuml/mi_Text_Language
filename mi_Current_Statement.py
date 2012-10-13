@@ -39,7 +39,6 @@ from mi_API_Parser import API_Constructor_Call, API_Type
 from mi_Parameter import Context_Parameter
 from mi_DB_Command import DB_Command
 from mi_Expression import Expression
-from mi_Metamodel_Parser import Metamodel_Parser
 
 class Current_Statement:
     """
@@ -63,7 +62,7 @@ class Current_Statement:
         self.R13_Extraction = extraction_obj
         self.section = current_section
         self.text = text
-        self.domain_parser = Metamodel_Parser()
+        self.metamodel_parser = extraction_obj.Bridge_to_Metamodel__parser
         self.parse()
 
 
@@ -81,13 +80,12 @@ class Current_Statement:
         for expr in Expression[self.section]:
             for pattern in expr['patterns']:
                 r = pattern.match( self.text )
-                if r:
-                    expr_name = expr['name']
+                if r: # The pattern regex has lightly parsed this expr
                     call_name = expr['call']
+                    expr_name = expr['name']
                     extracted_params = self.convert_params( call_name, r.groupdict() )
                     self.update_context( call_name, extracted_params )
-                    if 'extract' in extracted_params:
-                        extracted_params = self.domain_parser( extracted_params )
+                    self.metamodel_parser.parse( expr_name, extracted_params )
                     if call_name:
                         self.update_DB_Command( call_name, extracted_params )
                     return
@@ -95,8 +93,8 @@ class Current_Statement:
         # State: Invalid Statement
         # Fell through without finding a matching expression
         raise mi_Parse_Error(
-                'Statement has no matching expression',
-                self.extraction.name, self.extraction.current_line, self.text
+                "Statement has no matching expression",
+                self.R13_Extraction.fname, self.R13_Extraction.line_no, self.text
             )
 
     def convert_params( self, call_name, pdict ):
@@ -107,6 +105,11 @@ class Current_Statement:
         """
         typed_params = {}
         for p, v in pdict.items():
+            if not v:
+                continue
+            if p not in API_Constructor_Call[call_name]['parameters']:
+                # p is not going to be packaged with the API call
+                continue
             app_type = API_Constructor_Call[call_name]['parameters'][p]['type']
             typed_params[p] = API_Type[app_type](v)
         return typed_params
@@ -120,7 +123,6 @@ class Current_Statement:
         if last_command:
             last_command.add_supplied_params( extracted_params )
         else:
-            self.R13_Extraction
             my_db_script.add_command( call_name, extracted_params )
 
     def update_context( self, call_name, params ):

@@ -60,7 +60,7 @@ if __name__ != '__main__':
 
 # For now we will process a single file only, make sure one is specified
 if len( argv ) != 2:
-    print( "Usage: mi miuml_text_file" )
+    print( "Usage: mitext miuml_text_file" )
     exit(1)
 
 # Verify that the file exists before connecting to the db

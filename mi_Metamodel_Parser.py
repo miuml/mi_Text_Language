@@ -65,21 +65,28 @@ class Metamodel_Parser:
         self.db_pop_script = db_pop_script # Bridge to script domain
         self.new_domain()
 
-    def parse( self, parsed_expr ):
+    def parse( self, method_name, parsed_expr ):
         """
-        Given a lightly parsed expression, invoke a corresponding parse member
-        function to parse that data a bit deeper and buffer any forward
+        Given a lightly parsed expression, invoke a corresponding method
+        to parse that data a bit deeper and buffer any forward
         references or dependencies.
 
         """
-        expr_name = parsed_expr['name']
-
         # Verify that the member function is defined on this class
-        if expr_name not in self.__class__.__dict__.keys():
-            raise mi_Error( "No parse function for expression: " + expr_name )
+        if method_name not in self.__class__.__dict__.keys():
+            print(">> Parse: bad method_name")
+            pdb.set_trace()
+            raise mi_Error( "No parse function for expression: " + method_name )
 
         # Invoke it, passing along the parsed expression data
-        eval( 'self.' + expr_name )( parsed_expr )
+        eval( 'self.' + method_name )( parsed_expr )
+        # These expression functions are defined below
+        print(">> Expr:" + method_name + " meta-parsed")
+        pdb.set_trace()
+
+
+
+    # >>> Begin expression parsing functions
 
     def new_domain( self, domain_data=None ):
         """
@@ -87,9 +94,29 @@ class Metamodel_Parser:
 
         """
         # These are buffered up in the context of the current domain
+        self.subsystems = set() # All subsystems in current domain that have been parsed
         self.subsys_dependencies = {} # Classes in these have been processed
         self.identifiers = {}
         self.references = {}
+
+    def new_bridge( self, bridge_data ):
+        """
+        """
+        pass
+
+    def new_subsystem( self, subsys_data ):
+        """
+        Adds name to list of processed subsystems
+
+        """
+        self.subsystems.add( subsys_data['name'] )
+
+    def new_class( self, class_data ):
+        """
+        A new class has been created.  Start a new id record for it.
+
+        """
+        ids = self.identifiers[ Context_Parameter['class'] ] = []
 
     def new_ind_attr( self, attr_data ):
         """
@@ -98,7 +125,6 @@ class Metamodel_Parser:
 
         """
         self.parse_id( attr_data )
-
 
     def new_ref_attr( self, reference ):
         """
@@ -150,12 +176,7 @@ class Metamodel_Parser:
             attr_data = {'name':reference['from_attr'], 'id':reference['id']}
             self.parse_id( attr_data )
 
-    def new_class( self, class_data ):
-        """
-        A new class has been created.  Start a new id record for it.
-
-        """
-        ids = self.identifiers[ Context_Parameter['class'] ] = []
+    # <<< End of parse expression functions
 
     def parse_id( self, attr_data ):
         """
@@ -205,11 +226,9 @@ class Metamodel_Parser:
                 params['id_num'] = i+1
                 for this_attr in this_id:
                     params['attr'] = this_attr
-                    pdb.set_trace()
                     self.db_pop_script.add_command( 'add_attr_to_id', params )
             params['id_num'] = 1
             params['attr'] = INITIAL_DUMMY_ID_ATTR_NAME
-            pdb.set_trace()
             self.db_pop_script.add_command( 'remove_attr_from_id', params )
 
 
@@ -229,7 +248,6 @@ if __name__ == '__main__':
         'rnum':"24",
         'constrained':False
         } )
-    pdb.set_trace()
 
 #    Context_Parameter['domain'] = 'DMV'
 #    Context_Parameter['class'] = 'Car'
@@ -241,7 +259,6 @@ if __name__ == '__main__':
 #    parser.new_ind_attr( { 'name':'License Number', 'id':"I3" } )
 #    parser.new_ind_attr( { 'name':'Manufacturer', 'id':"I2" } )
 #    parser.add_id_commands()
-#    pdb.set_trace()
 
 
 

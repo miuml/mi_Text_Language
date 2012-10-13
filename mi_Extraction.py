@@ -35,6 +35,7 @@ if MODULE_DIR not in sys.path:
 from mi_Error import *
 from mi_Section import *
 from mi_Current_Statement import Current_Statement
+from mi_Metamodel_Parser import Metamodel_Parser
 
 # Global
 
@@ -57,6 +58,9 @@ class Extraction:
 
         # Model navigation shorcuts
         self.R9_DB_Population_Script = db_pop_script_obj
+
+        # Bridge to the parser in the Metamodel domain
+        self.Bridge_to_Metamodel__parser = Metamodel_Parser( db_pop_script_obj )
 
         # Initial position in miUML Text Script
         self.current_section = 'model'
@@ -108,7 +112,6 @@ class Extraction:
                 else:
                     # Create a Statement which will parse the content
                     # any whitespace indent is removed
-                    pdb.set_trace()
                     Current_Statement( line.strip(), self.current_section, self )
 
     def update_section( self, section_name ):

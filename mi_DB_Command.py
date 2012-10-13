@@ -100,8 +100,16 @@ class DB_Command:
         # State: Packaging Parameter Values
 
         # Add the newly extracted parameters to our supplied params
-        for p, v in extracted_params.items():
-            self.supplied_params[p] = v
+
+        # assign each expected required or optional parameter value 
+        # as a supplied value.  There may be some params that were extracted
+        # that were processed during parsing and have meaning here.  So it is
+        # important to assign only those parameter names defined for this
+        # db command
+        for pname in self.api_param_specs: # For each expected parameter
+            if (pname not in self.supplied_params) and (pname in extracted_params):
+                # If not already supplied by context and it has been extracted
+                self.supplied_params[pname] = extracted_params[pname]
 
         # If the required pnames minus the supplied pnames is empty, then
         # we have a value for each 
@@ -117,7 +125,6 @@ class DB_Command:
         ex: UI_new_class( p_name:=%s, p_alias:=%s, p_cnum:=%s )
 
         """
-        pdb.set_trace()
         # State: Completed
 
         # Start with the api call name and an open parenthesis
@@ -132,6 +139,10 @@ class DB_Command:
             self.pvals.append( v ) # Append the value to be assigned
         self.cmd += ", ".join( pstrings ) + " )" # Add params and closing parenthesis
 
+        print(">> New cmd: ")
+        print(self.cmd)
+        print(self.pvals)
+        pdb.set_trace()
         # State: Completed / ( final state with procedure finished )
 
 
