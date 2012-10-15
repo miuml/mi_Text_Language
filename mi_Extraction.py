@@ -39,7 +39,6 @@ from mi_Metamodel_Parser import Metamodel_Parser
 
 # Global
 
-
 # Constants
 COMMENT_CHAR = '#'
 
@@ -132,7 +131,11 @@ class Extraction:
                         self.fname, self.line_no, section_name )
 
         self.current_section = section_name
-
+        # DIAGNOSTIC
+        if self.current_section == 'relationships':
+            print()
+            print(" *** END OF TEST *** ")
+            pdb.set_trace()
 
     def strip_comment( self, line ):
         """
@@ -152,20 +155,3 @@ class Extraction:
 
         # Content, but no comment, preserve indent and strip trailing whitespace/newline
         return line.rstrip()
-
-
-
-
-# Not sure where these should go
-#    def add_ref_attr( self, data_items ):
-#        """
-#        { R26: { 'from': 'Source attribute', 'to':'Name', 'constrained':True } }
-#        """
-#        rnum = data_items.pop('rnum')
-#        self.ref_attrs[rnum] = data_items
-#
-#    def add_non_primary_id( self ):
-#        """
-#        """
-#        self.np_ids['class'] = 
-#

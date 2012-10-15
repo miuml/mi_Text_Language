@@ -31,6 +31,7 @@ if MODULE_DIR not in sys.path:
 from mi_Error import *
 from mi_Parameter import Context_Parameter
 from mi_Expression import SUBSYS_REF
+from mi_API_Parser import API_Type
 
 
 # Diagnostic
@@ -41,10 +42,6 @@ import pdb # debug
 # This name should stand out in case it does not get deleted
 # after the entire DB Pop script has completed, as it should
 INITIAL_DUMMY_ID_ATTR_NAME = '__POP_Dummy_ID'
-
-# Regex
-
-# Global
 
 
 # { rnum:[{ from_class, from_attr, to_class, to_attr, const }, ...] }
@@ -82,7 +79,7 @@ class Metamodel_Parser:
         eval( 'self.' + method_name )( parsed_expr )
         # These expression functions are defined below
         print(">> Expr:" + method_name + " meta-parsed")
-        pdb.set_trace()
+        #pdb.set_trace()
 
 
 
@@ -120,47 +117,80 @@ class Metamodel_Parser:
 
     def new_ind_attr( self, attr_data ):
         """
-        Everything except the identifier string has been parsed.  So that's
-        the only thing we need to do.
+        If an identifier string is specified, parse it.  Convert the data type to
+        the correct API variable name and reject if type is unknown.
 
         """
-        self.parse_id( attr_data )
+        # Create any required identifier attributes
+        if attr_data['id']:
+            self.parse_id( attr_data )
 
-    def new_ref_attr( self, reference ):
+        # Fill in / convert / validate the type name
+        attr_type = attr_data['type']
+        if not attr_type:
+            # Assume it is the same as the attribute name
+            attr_type = attr_data['name']
+        # Change it to a variable name style with lower case and underscores
+        attr_type = attr_type.replace(" ", "_").lower()
+        if attr_type not in API_Type:
+            raise mi_Error("Unknown data type specified: " + attr_type )
+
+        # Change the extracted value to the correct type name
+        attr_data['type'] = attr_type
+
+
+
+    def new_ref_attr( self, attr_data ):
         """
-        A reference indicates a referring direction from one attribute to one
-        or more other attributes in the same or a different class.
+        According to the miUML metatmodel, a Referential Attribute participates in
+        one or more References.  A Relationship is formalized by one or more
+        References.
 
-        Here we finish parsing the reference data, request an identifier attribute
-        if id membership is specified and save the reference data for later use
-        during the Relationship command construction phase.
+        This meanst that a new referential attribute parsed here may participate in
+        multiple References.  Each of these References must be added to the references
+        dictionary structured as shown:
+
+        references -> { rnum: <reference>, ... }
+        <reference> -> [
+            'from_attr':from_attr, 'to_attr':to_attr,
+            'from_class':from_class, 'to_class':to_class, constrained:<boolean>
+            ]
+
+        This data will be used during the relationship construction phase after all
+        new class and new ind attr commands are added to the DB Pop Script.
 
         The incoming reference dictionary has the following keys:
             'from_attr', 'to_attrs', 'id', 'rnum', 'constrained'
 
-        Most of these values are fully parsed by the extracting regex, but 'to_attts'
-        may contain multiple to attributes, so these must be parsed out here.
+        Most of these values are fully parsed by the extracting regex, but 'to_attrs'
+        may contain multiple to attributes, so these must be parsed out to yield possibly
+        many references, one for each destination attribute.
 
+        Finally, we request an identifier attribute if id membership is specified as
+        a referential attribute can participate in an identifier just like an independent
+        attribute.
+        
         """
         # Save for quick access in to_attr loop
-        rnum = reference['rnum']
-        constrained = reference['constrained']
-        from_attr = reference['from_attr']
-        id_member = reference['id']
+        rnum = attr_data['rnum']
+        constrained = attr_data['constrained']
+        from_attr = attr_data['from_attr']
+        id_member = attr_data['id']
         from_class = Context_Parameter['class']
         this_subsys = Context_Parameter['subsys']
         this_domain = Context_Parameter['domain']
 
-        # Create a new reference set for this relationship
+        # Create a new attr_data set for this relationship
         if rnum not in self.references:
             self.references[rnum] = []
 
         # Parse to_attrs
-        to_attrs = reference['to_attrs'].split(", ")
+        to_attrs = attr_data['to_attrs'].split(", ")
         for to_attr in to_attrs:
             ref_rec = {
+                    'from_attr':from_attr,
+                    'subsystem':this_subsys,
                     'from_class':from_class,
-                    from_attr:reference['from_attr'],
                     'constrained':constrained
                 }
             if SUBSYS_REF in to_attr:
@@ -168,12 +198,15 @@ class Metamodel_Parser:
                 if this_subsys not in self.subsys_dependencies:
                     self.subsys_dependencies[this_subsys] = set( )
                 self.subsys_dependencies[this_subsys].add( to_subsys )
-            ref_rec['to_class'], ref_rec['to_attr'] = to_attr.split( '.' )
+            try:
+                ref_rec['to_class'], ref_rec['to_attr'] = to_attr.split( '.' )
+            except ValueError:
+                raise mi_Error( "Bad to attr reference in referential attribute: " + to_attr )
             self.references[rnum].append( ref_rec )
 
         # If ref attr participates in one or more ids, parse id data
-        if reference['id']:
-            attr_data = {'name':reference['from_attr'], 'id':reference['id']}
+        if attr_data['id']:
+            attr_data = {'name':attr_data['from_attr'], 'id':attr_data['id']}
             self.parse_id( attr_data )
 
     # <<< End of parse expression functions
@@ -184,6 +217,8 @@ class Metamodel_Parser:
         its info so we can add it to each of its id's in the add id commands phase.
 
         """
+        print(">> Parsing ID for: " + attr_data['id'] )
+        #pdb.set_trace()
         ids = self.identifiers[ Context_Parameter['class'] ]
         max_id_num = len(ids) # The current max id number
 
@@ -209,6 +244,8 @@ class Metamodel_Parser:
         for i in id_numbers:
             ids[i-1].add( attr_name ) # its a set, so no duplicates
 
+        print(">> ID Created")
+        #pdb.set_trace()
 
     def add_id_commands( self ):
         """

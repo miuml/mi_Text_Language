@@ -68,10 +68,9 @@ Section = {
         'bridges':'bridge'
     }
 
-# Section grammar has been hand-parsed so that
-# given a current section, we can determine which sections may
-# appear next, taking into metamodel hierarchy, and whether or not a term
-# is optional.
+# Section grammar has been hand-parsed so that given a current section, we can
+# determine which sections may appear next, taking into metamodel hierarchy, and
+# whether or not a term is optional.
 #
 # Grammar for section headers:
 #
@@ -81,14 +80,16 @@ Section = {
 #
 # Key: -> = 'is composed of', {} = 'one or more', [] = 'optional', <> = 'atomic'
 #
-Section_Order = {
+
+Section_Order = { # Explicit ordering only
     # <term> : <terms that may appear next> 
     'model':{ 'domain' }, # ex: if current_section is 'model', next must be 'domain'
     'domain':{ 'types', 'subsystem' },
     'types':{ 'subsystem' },
     'subsystem':{ 'classes', 'domain', 'bridges' },
     'classes':{
-        'relationships', 'lifecycles', 'cloops', 'lineages', 'subsystem', 'domain', 'bridges'
+        'relationships', 'lifecycles', 'cloops', 'lineages',
+        'subsystem', 'domain', 'bridges'
     },
     'relationships':{
         'lifecycles', 'cloops', 'lineages', 'subsystem', 'domain', 'bridges'

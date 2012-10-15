@@ -10,72 +10,73 @@ subsystem
     Class / CLASS / 1-50
 
 classes
-    Attribute / ATTR
+    Attribute / ATTR //
         Name / I
         Class -> Class.Name / R20
         Domain -> Class.Domain / R20 # No target name, so use same name: Class.Domain
 
-    Attribute in Derivation / ATTR_IN_DERIV
+    Attribute in Derivation / ATTR_IN_DERIV //
         Source attribute -> Attribute.Name / I / R26c
         Source class -> Attribute.Class / I / R26c
         Target attribute -> Derived Attribute.Name / I / R26
         Target class -> Derived Attribute.Class / I / R26
         Domain -> Attribute.Domain, Derived Attribute.Domain / I / R26
 
-    Class / C
+    Class / C //
         Name / I
         Cnum : Nominal / I3
         Alias : Short name / I4
         Domain -> Subsystem Element.Domain / I234 / R14
         Element -> Subsystem Element.Number / I2 / R14
 
-    Derived Attribute / DATTR
+    Derived Attribute / DATTR //
         Name -> Native Attribute.Name / I / R25
         Class -> Native Attribute.Class / I / R25
         Domain -> Native Attribute.Domain / I / R25
         Formula : Description
 
-    Identifier / ID
+    Identifier / ID //
         Number : Nominal / I
         Class -> Class.Name / I / R27
         Domain -> Class.Domain / I / R27
 
-    Identifier Attribute / ID_ATTR
+    Identifier Attribute / ID_ATTR //
         Identifier -> Identifier.Number / I / R22
         Attribute -> Attribute.Name / I / R22
         Class -> Identifier.Class, Attribute.Class / I / R22
         Domain -> Identifier.Domain, Attribute.Domain / I / R22
 
-    Independent Attribute / IND_ATTR
+    Independent Attribute / IND_ATTR //
         Name -> Native Attribute.Name / I / R25
         Class -> Native Attribute.Class / I / R25
         Domain -> Native Attribute.Domain / I / R25
 
-    Modeled Identifier / MID
+    Modeled Identifier / MID //
         Number -> Identifier.Number / I / R30
         Class -> Identifier.Class / I / R30
         Domain -> Identifier.Domain / I / R30
 
-    Native Attribute / NAT_ATTR
+    Native Attribute / NAT_ATTR //
         Name -> Attribute.Name / I / R21
         Class -> Attribute.Class / I / R21
         Domain -> Attribute.Domain / I / R21
         Type -> Type::Constrained Type.Name / R24
 
-    Non Specialized Class / NON_SPEC
+    Non Specialized Class / NON_SPEC //
         Name -> Class.Name / I / R23
         Domain -> Class.Domain / I / R23
 
-    Referential Attribute / REF_ATTR
+    Referential Attribute / REF_ATTR //
         Name -> Attribute.Name / I / R21
         Class -> Attribute.Class / I / R21
         Domain -> Attribute.Domain / I / R21
-        \ Type
 
-    Referential Role / REF_ROLE
+    Referential Role / REF_ROLE //
         Reference type -> Formalization::Reference.Type / R31 / I
-        From class -> Formalization::Reference.From class, Referential Attribute / R31 / I
-        To class -> Formalization::Reference.To class, / R31 / I
+
+        From class -> Formalization::Reference.From class, Referential Attribute.Class / R31 / I
+
+        To class -> Formalization::Reference.To class / R31 / I
         Rnum ->Formalization::Reference.Rnum / R31 / I
         Domain ->Formalization::Reference.Domain, Referential Attribute.Domain / R31 / I
         From attribute -> Referential Attribute.Name / R31 / I

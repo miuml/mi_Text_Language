@@ -59,6 +59,7 @@ class Current_Statement:
         and extracting the Data Item values
 
         """
+        self.implicit_section = None
         self.R13_Extraction = extraction_obj
         self.section = current_section
         self.text = text
@@ -83,8 +84,15 @@ class Current_Statement:
                 if r: # The pattern regex has lightly parsed this expr
                     call_name = expr['call']
                     expr_name = expr['name']
-                    extracted_params = self.convert_params( call_name, r.groupdict() )
-                    self.update_context( call_name, extracted_params )
+                    extracted_params = r.groupdict()
+                    print("----------------------------------")
+                    print(">> Parsing: " + self.text)
+                    print("----------------------------------")
+                    #pdb.set_trace()
+                    if call_name:
+                        # Perform type conversion on any API call params
+                        extracted_params = self.convert_params( call_name, extracted_params )
+                        self.update_context( call_name, extracted_params )
                     self.metamodel_parser.parse( expr_name, extracted_params )
                     if call_name:
                         self.update_DB_Command( call_name, extracted_params )
@@ -105,13 +113,13 @@ class Current_Statement:
         """
         typed_params = {}
         for p, v in pdict.items():
-            if not v:
-                continue
-            if p not in API_Constructor_Call[call_name]['parameters']:
-                # p is not going to be packaged with the API call
-                continue
-            app_type = API_Constructor_Call[call_name]['parameters'][p]['type']
-            typed_params[p] = API_Type[app_type](v)
+            if v and (p in API_Constructor_Call[call_name]['parameters']):
+                app_type = API_Constructor_Call[call_name]['parameters'][p]['type']
+                typed_params[p] = API_Type[app_type](v)
+            else:
+                # Either v is none or p is not an api param.  In either case
+                # no type conversion is necessary, but keep the value for further parsing
+                typed_params[p] = v
         return typed_params
 
 

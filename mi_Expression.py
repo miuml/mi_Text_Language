@@ -42,9 +42,10 @@ SUBSYS_REF = '::' # Subsystem reference
 
 # Regex pattern building blocks
 SPACE = r'\s*' # Stretch of whitespace
-NAME = r'\w[\w\s]*\w' # Spaces must be rtrimmed on extraction
+NAME = r'\w([\w\s]*\w)?' # Spaces must be rtrimmed on extraction
 TO_NAME = r'\w[\w\s:.,]*' # Target of attribute reference
 LIST = SPACE + LIST_DELIM + SPACE
+TERM = SPACE + '//$' # Class terminator (might also be used in other ways)
 REF = SPACE + REF_SYMBOL + SPACE
 TYPE = SPACE + TYPE_SYMBOL + SPACE
 SUPER = r'<'
@@ -67,7 +68,7 @@ opt_cnum_RS = '(' + LIST + r'(?P<cnum>\d+)' + ')?' # optional <num>
 # Full pattern names for readability
 name_alias_domain_type_RS = LIST.join( [name_RS, alias_RS, domain_type_RS] )
 name_alias_range_RS = LIST.join( [name_RS, alias_RS, range_RS] )
-name_alias_opt_cnum_RS = LIST.join( [name_RS, alias_RS] ) + opt_cnum_RS
+name_alias_opt_cnum_term_RS = LIST.join( [name_RS, alias_RS] ) + opt_cnum_RS + TERM
 
 
 #persp_RS = from_class_RS + LIST + phrase_RS + mult_RS + to_class_RS
@@ -119,20 +120,20 @@ Expression = { # Expression modeled class implemented as dict
     'classes':(
         {
             'name':'new_class',
-            'patterns':( re.compile( name_alias_opt_cnum_RS ), ),
+            'patterns':( re.compile( name_alias_opt_cnum_term_RS ), ),
             'call':'new_class'
-        },
-        {
-            'name':'new_ind_attr',
-            'patterns':(
-                re.compile( opt_deriv_attr_opt_type_opt_id_RS ), ),
-            'call':'new_ind_attr'
         },
         {
             'name':'new_ref_attr',
             'patterns':(
                 re.compile( from_attr_to_attrs_opt_id_rnum_opt_c_RS ), ),
             'call': None, # No API call, data saved for later command
+        },
+        {
+            'name':'new_ind_attr',
+            'patterns':(
+                re.compile( opt_deriv_attr_opt_type_opt_id_RS ), ),
+            'call':'new_ind_attr'
         }
     ),
 #    'relationships':(

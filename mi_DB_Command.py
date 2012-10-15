@@ -142,7 +142,8 @@ class DB_Command:
         print(">> New cmd: ")
         print(self.cmd)
         print(self.pvals)
-        pdb.set_trace()
+        print()
+        #pdb.set_trace()
         # State: Completed / ( final state with procedure finished )
 
 
